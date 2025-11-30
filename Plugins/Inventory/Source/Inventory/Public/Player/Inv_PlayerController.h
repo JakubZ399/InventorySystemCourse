@@ -6,6 +6,7 @@
 #include "GameFramework/PlayerController.h"
 #include "Inv_PlayerController.generated.h"
 
+class UInv_InventoryComponent;
 class UInputAction;
 class UInputMappingContext;
 class UInv_HUDWidget;
@@ -20,6 +21,9 @@ class INVENTORY_API AInv_PlayerController : public APlayerController
 public:
 	AInv_PlayerController();
 	virtual void Tick(float DeltaSeconds) override;
+
+	UFUNCTION(BlueprintCallable, Category = "Inventory")
+	void ToggleInventoryMenu();
 	
 protected:
 	virtual void BeginPlay() override;
@@ -30,11 +34,16 @@ private:
 	void CreateHUDWidget();
 	void TraceForItem();
 	
+	TWeakObjectPtr<UInv_InventoryComponent> InventoryComponent;
+	
 	UPROPERTY(EditDefaultsOnly, Category = "Inventory")
 		TArray<TObjectPtr<UInputMappingContext>> DefaultIMCs;
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Inventory")
 		TObjectPtr<UInputAction> PrimaryInteractionAction;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Inventory")
+		TObjectPtr<UInputAction> ToggleInventoryAction;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Inventory")
 		TSubclassOf<UInv_HUDWidget> HUDWidgetClass;
